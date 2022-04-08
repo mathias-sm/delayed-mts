@@ -32,7 +32,7 @@ jsPsych.plugins['delayed-mts'] = (function() {
       delay: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: "Delay",
-        default: 2000,
+        default: 200,
         array: true,
         description: 'Delay between presentation and choice'
       }
@@ -106,6 +106,7 @@ jsPsych.plugins['delayed-mts'] = (function() {
 
       frame = document.createElement('div');
       frame.id = "reveal_div";
+      frame.style.fontSize = "24px";
 
       frame.innerHTML = "Gardez la barre d’<strong>espace</strong> appuyée <strong>aussi longtemps que nécessaire</strong> pour mémoriser la forme";
 
@@ -126,7 +127,10 @@ jsPsych.plugins['delayed-mts'] = (function() {
           td = document.createElement('td');
           td.draggable = false;
           td.innerHTML = trial.distractors[row*3+col];
-          td.style.padding = "20px";
+          //td.style.padding = "20px";
+          td.style.fontSize = "24px";
+          td.style.height = "200px";
+          td.style.width = "200px";
           td.style.cursor = "default";
           td.onclick = function(id) {
             return function() { record_choice(id, tbl); };
