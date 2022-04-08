@@ -113,8 +113,6 @@ jsPsych.plugins['delayed-mts'] = (function() {
 
       document.addEventListener("keydown", handle_kb_down);
       document.addEventListener("keyup", handle_kb_up);
-
-      frame.appendChild(ref);
     }
 
     function screen_choice() {
