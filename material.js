@@ -45,3 +45,5 @@ for (i = 0 ; i < allStimuli.length ; i++) {
   allStimuli[i].type = 'delayed-mts';
   task.push(allStimuli[i]);
 }
+
+task = jsPsych.randomization.shuffle(task);
