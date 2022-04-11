@@ -44,7 +44,7 @@ jsPsych.plugins['delayed-mts'] = (function() {
     var response = {
       encoding_time: null,
       choice_time: null,
-      response: null
+      choice: null
     };
     var rt_ref, ref;
     var lt = null;
@@ -79,7 +79,7 @@ jsPsych.plugins['delayed-mts'] = (function() {
       var choice_time = (performance.now()) - rt_ref;
       if (choice_time > 200) {
         response.choice_time = choice_time;
-        response.response = n.childNodes[0].innerHTML;
+        response.choice = n.childNodes[0].nodeValue;
         choice_made(n, tbl)
       }
     }
@@ -156,7 +156,7 @@ jsPsych.plugins['delayed-mts'] = (function() {
       var trialdata = Object.assign({}, trial);
 
       trialdata.encoding_time = response.encoding_time;
-      trialdata.responses = response.response,
+      trialdata.choice = response.choice,
       trialdata.choice_time = response.choice_time;
 
       display_element.innerHTML = '';

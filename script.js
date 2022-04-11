@@ -72,7 +72,11 @@ jsPsych.init({
   show_preload_progress_bar: !debug,
   on_finish: function() {
     display_element = document.getElementById("jspsych-content");
-    display_element.innerHTML = "Thank you for your participation.";
+    if (debug) {
+      display_element.innerHTML = "<pre>" + jsPsych.data.get().csv() + "</pre>";
+    } else {
+      display_element.innerHTML = "Thank you for your participation.";
+    }
     SaveData("tmp_delayed_mts", subjectID, jsPsych.data.get().csv());
   }
 });
