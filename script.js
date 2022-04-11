@@ -51,15 +51,28 @@ var freeform_answer = {
   questions: [{prompt: "<p>You can write any comment regarding the experiment in the field below, but make sure not to reveal your identity.</p>", rows: 3}],
 };
 
-//sendData(subjectID, "test", "test", "ping");
+function SaveData(project, filename, filedata) {
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/msm/save-data.php');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onload = function() {
+    if (xhr.status === 200 && xhr.responseText !== "GOT IT") {
+        // document.body.innerHTML += xhr.responseText;
+    }
+    else if (xhr.status !== 200) {
+        //alert('Request failed.  Returned status of ' + xhr.status);
+    }
+  };
+  xhr.send(encodeURI('project=' + project+'&filename=' + filename+'&filedata=' + filedata));
+}
+
 jsPsych.init({
   timeline: (debug ? [].concat(resize, task) : [].concat(consent, survey, resize, instructions, task, freeform_answer)),
   show_progress_bar: false,
   show_preload_progress_bar: !debug,
   on_finish: function() {
     display_element = document.getElementById("jspsych-content");
-    csv_data = jsPsych.data.get().csv();
-    display_element.innerHTML += "<pre>"+csv_data+"</pre>";
-    //sendData(subjectID, "test", "test", csv_data);
+    display_element.innerHTML = "Thank you for your participation.";
+    SaveData("tmp_delayed_mts", subjectID, jsPsych.data.get().csv());
   }
 });
