@@ -43,6 +43,7 @@ for (i = 0 ; i < allStimuli.length ; i++) {
 
   allStimuli[i].distractors = distractors;
   allStimuli[i].type = 'delayed-mts';
+  allStimuli[i].delay = 2000;
   task.push(allStimuli[i]);
 }
 
