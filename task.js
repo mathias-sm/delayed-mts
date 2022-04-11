@@ -108,7 +108,7 @@ jsPsych.plugins['delayed-mts'] = (function() {
       frame.id = "reveal_div";
       frame.style.fontSize = "24px";
 
-      frame.innerHTML = "Gardez la barre d’<strong>espace</strong> appuyée <strong>aussi longtemps que nécessaire</strong> pour mémoriser la forme";
+      frame.innerHTML = "Keep the <strong>spacebar</strong> pressed <strong>as long as needed</strong> for you to memorize the string of letters";
 
       display_element.appendChild(frame);
 

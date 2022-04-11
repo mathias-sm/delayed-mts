@@ -22,17 +22,17 @@ var instructions = {
 // put the data into yet another file.
 var survey = {
   type: "survey-dropdown",
-  preamble: "Un petit questionnaire pour commencer",
+  preamble: "A questionnaire",
   questions: [
     {
-      prompt: "Genre",
-      options: [ "Homme", "Femme", "Non binaire", "Autre", "Préfère ne pas répondre", ],
-      labels: ["M", "F", "NB", "O", "NoAnswer"],
+      prompt: "Gender",
+      options: [ "Male", "Female", "Other"],
+      labels: ["M", "F", "O"],
     },
     { prompt: "Age", htmlType: "number" },
     {
-      prompt: "Plus haut niveau de scolarité atteint",
-      options: [ "Ecole primaire", "Collège", "Lycée", "Licence", "Master", "Doctorat", ],
+      prompt: "Highest level of education",
+      options: [ "Primary school", "Middle school", "High school", "B.A.", "Master", "Doctorat", ],
       labels: [ "PrimarySchool", "MiddleSchool", "HighSchool", "Ba", "Ms", "PhD", ],
     },
   ],
@@ -48,7 +48,7 @@ var resize = {
 
 var freeform_answer = {
   type: 'survey-text',
-  questions: [{prompt: "<p>Vous pouvez indiquer toute remarque à propos de cette expérience dans le champ ci-dessous. Veuillez ne pas y entrer d'information permettant de vous identifier ici.</p>", rows: 3}],
+  questions: [{prompt: "<p>You can write any comment regarding the experiment in the field below, but make sure not to reveal your identity.</p>", rows: 3}],
 };
 
 //sendData(subjectID, "test", "test", "ping");
