@@ -15,14 +15,14 @@ jsPsych.plugins['delayed-mts'] = (function() {
     name: 'delayed-mts',
     description: '',
     parameters: {
-      reference: {
+      target_word: {
         type: jsPsych.plugins.parameterType.STRING,
-        pretty_name: 'reference',
+        pretty_name: 'Target Word',
         default: undefined,
         array: true,
-        description: 'The reference image to be revealed.'
+        description: 'The reference word to be revealed.'
       },
-      distractors: {
+      distractor_list: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Distractors',
         default: undefined,
@@ -86,7 +86,7 @@ jsPsych.plugins['delayed-mts'] = (function() {
 
     function handle_kb_down(event) {
       if (event.keyCode == 32) {
-        frame.innerHTML = trial.reference;
+        frame.innerHTML = trial.target_word;
 
         if (lt === null) {
           lt = performance.now();
@@ -126,7 +126,7 @@ jsPsych.plugins['delayed-mts'] = (function() {
         for (var col = 0; col < 3 ; col++) {
           td = document.createElement('td');
           td.draggable = false;
-          td.innerHTML = trial.distractors[row*3+col];
+          td.innerHTML = trial.distractor_list[row*3+col];
           //td.style.padding = "20px";
           td.style.fontSize = "24px";
           td.style.height = "200px";
