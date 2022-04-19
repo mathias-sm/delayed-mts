@@ -58,5 +58,3 @@ for (i = 0 ; i < allStimuli.length / 2; i++) {
   allStimuli[i].blank_delay = 500;
   task.push(allStimuli[i]);
 }
-
-console.log(task);

@@ -77,6 +77,6 @@ jsPsych.init({
     } else {
       display_element.innerHTML = "Thank you for your participation.";
     }
-    SaveData("tmp_delayed_mts", subjectID, jsPsych.data.get().csv());
+    SaveData("pilot_delayed_mts", subjectID, jsPsych.data.get().csv());
   }
 });
