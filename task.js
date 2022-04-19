@@ -29,7 +29,7 @@ jsPsych.plugins['delayed-mts'] = (function() {
         array: true,
         description: 'The images to be displayed.'
       },
-      delay: {
+      blank_delay: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: "Delay",
         default: 200,
@@ -147,7 +147,7 @@ jsPsych.plugins['delayed-mts'] = (function() {
       setTimeout(function() {
         tbdy.style.opacity = "1";
         rt_ref = performance.now();
-      }, trial.delay);
+      }, trial.blank_delay);
     }
 
     function end_trial(){

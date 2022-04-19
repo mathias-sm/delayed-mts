@@ -1,50 +1,62 @@
 var task = [];
 
-var rawFileExp = new XMLHttpRequest();
-var allStimuli;
-rawFileExp.open("GET", "./stimuli.csv", false);
-rawFileExp.onreadystatechange = function ()
-{
-  if(rawFileExp.readyState === 4)
-  {
-    if(rawFileExp.status === 200 || rawFileExp.status == 0 || rawFileExp.status === 304)
-    {
-      allStimuli = Papa.parse(rawFileExp.responseText, {delimiter: ",", header: true}).data
-      allStimuli = allStimuli.filter(function(e) { return e.reference !== "" });
+allStimuli = jsPsych.randomization.shuffle(allStimuli);
+
+test_includes = function(arr, elem) {
+  for (j = 0 ; j < arr.length ; j++) {
+    e = arr[j];
+    if (e[0] == elem[0] && e[1] == elem[1]) {
+      return true;
     }
   }
+  return false;
 }
-rawFileExp.send(null);
 
-
-for (i = 0 ; i < allStimuli.length ; i++) {
-  reference = allStimuli[i].reference;
+for (i = 0 ; i < allStimuli.length / 2; i++) {
+  reference = allStimuli[i].target_word;
   distractors = [reference]
 
-  // Sample five random letters without replacement
-  var letters = "abcdefghijklmnopqrstuvwxyz".split('');
-  letters = jsPsych.randomization.sampleWithoutReplacement(letters, 26);
-  var idx_letter = 0;
+  // Prepapre substitution positions by shuffling to ensure coverage
+  positions_base = []
+  for (j = 0 ; j < reference.length ; j++) {
+    positions_base.push(j);
+  }
+  positions = jsPsych.randomization.shuffle(positions_base);
+  while (positions.length < 5) {
+    new_pos = jsPsych.randomization.shuffle(positions_base);
+    positions = positions.concat(new_pos);
+  }
 
+  var replaced_tuples = [];
   for (j = 0 ; j < 5 ; j++) {
     //Split, replace a random position with a sampled letter , join, push
     var distractor = reference.split('');
-    var pos = Math.floor(Math.random() * distractor.length);
-    // Ensures that we replace a letter with an actually different one
-    while (distractor[pos] == letters[idx_letter]) {
+    var pos = positions[j];
+
+    // Shuffles letters to go through
+    var letters = "abcdefghijklmnopqrstuvwxyz".split('');
+    letters = jsPsych.randomization.sampleWithoutReplacement(letters, 26);
+    var idx_letter = 0;
+
+    // Ensures that we replace a letter with an actually different one, which we
+    // haven't used yet
+    while (distractor[pos] == letters[idx_letter] ||
+           test_includes(replaced_tuples, [pos, letters[idx_letter]])
+           ) {
       idx_letter = idx_letter + 1;
     }
+
+    replaced_tuples.push([pos, letters[idx_letter]]);
     distractor[pos] = letters[idx_letter];
     distractors.push(distractor.join(""));
-    idx_letter = idx_letter + 1;
   }
 
   distractors = jsPsych.randomization.shuffle(distractors);
 
-  allStimuli[i].distractors = distractors;
+  allStimuli[i].distractor_list = distractors;
   allStimuli[i].type = 'delayed-mts';
-  allStimuli[i].delay = 2000;
+  allStimuli[i].blank_delay = 500;
   task.push(allStimuli[i]);
 }
 
-task = jsPsych.randomization.shuffle(task);
+console.log(task);
