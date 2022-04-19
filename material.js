@@ -1,5 +1,31 @@
 var task = [];
 
+train_1 = {
+  "type": "delayed-mts",
+  "blank_delay": 500,
+  "is_train": true,
+  "target_word": "decra",
+  "distractor_list": jsPsych.randomization.shuffle(["decra","debra","dacra","aecra","decva","decrl",]),
+}
+
+train_2 = {
+  "type": "delayed-mts",
+  "blank_delay": 500,
+  "is_train": true,
+  "target_word": "pivolt",
+  "distractor_list": jsPsych.randomization.shuffle(["pivolt","bivolt","povolt","pixolt","pivplt","pivout"]),
+}
+
+train_3 = {
+  "type": "delayed-mts",
+  "blank_delay": 500,
+  "is_train": true,
+  "target_word": "morpha",
+  "distractor_list": jsPsych.randomization.shuffle(["morpha","borpha","mprpha","moipha","morqha","morppa"]),
+}
+
+task.push(train_1, train_2, train_3);
+
 allStimuli = jsPsych.randomization.shuffle(allStimuli);
 
 test_includes = function(arr, elem) {
@@ -56,5 +82,6 @@ for (i = 0 ; i < allStimuli.length / 2; i++) {
   allStimuli[i].distractor_list = distractors;
   allStimuli[i].type = 'delayed-mts';
   allStimuli[i].blank_delay = 500;
+  allStimuli[i].is_train = false;
   task.push(allStimuli[i]);
 }
