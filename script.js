@@ -13,8 +13,6 @@ var consent = {
 var instructions = {
   type:'instructions',
   show_clickable_nav: true,
-  button_label_next: "Suite",
-  button_label_previous: "Précédent",
   pages: [instruction_text_p1]
 };
 
