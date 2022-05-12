@@ -1,87 +1,62 @@
 var task = [];
+// Number of trials
+var N = 100;
+var first_stim_duration = 1000;
+var gap_duration = 1000;
+var second_stim_duration = 2000;
+var same_key = "f"
+var different_key = "j"
 
 train_1 = {
-  "type": "delayed-mts",
-  "blank_delay": 500,
-  "is_train": true,
-  "target_word": "decra",
-  "distractor_list": jsPsych.randomization.shuffle(["decra","debra","dacra","aecra","decva","decrl",]),
+  "type": "same-different-html",
+  "stimuli": ["decra", "debra"],
+  "same_key": same_key,
+  "different_key": different_key,
+  "answer": "different",
+  "first_stim_duration": first_stim_duration,
+  "gap_duration": gap_duration,
+  "second_stim_duration": second_stim_duration,
 }
 
-train_2 = {
-  "type": "delayed-mts",
-  "blank_delay": 500,
-  "is_train": true,
-  "target_word": "pivolt",
-  "distractor_list": jsPsych.randomization.shuffle(["pivolt","bivolt","povolt","pixolt","pivplt","pivout"]),
-}
-
-train_3 = {
-  "type": "delayed-mts",
-  "blank_delay": 500,
-  "is_train": true,
-  "target_word": "morpha",
-  "distractor_list": jsPsych.randomization.shuffle(["morpha","borpha","mprpha","moipha","morqha","morppa"]),
-}
-
-task.push(train_1, train_2, train_3);
+// TODO: ADD SOME more training
+task.push(train_1);
 
 allStimuli = jsPsych.randomization.shuffle(allStimuli);
 
-test_includes = function(arr, elem) {
-  for (j = 0 ; j < arr.length ; j++) {
-    e = arr[j];
-    if (e[0] == elem[0] && e[1] == elem[1]) {
-      return true;
-    }
-  }
-  return false;
+// Randomize exactly 50/50 correct
+var trial_correctness_array = [];
+for (var i = 0 ; i < N/2 ; i++) {
+  trial_correctness_array.push(true);
+  trial_correctness_array.push(false);
 }
+trial_correctness_array = jsPsych.randomization.shuffle(trial_correctness_array);
 
-for (i = 0 ; i < allStimuli.length / 2; i++) {
-  reference = allStimuli[i].target_word;
-  distractors = [reference]
-
-  // Prepapre substitution positions by shuffling to ensure coverage
-  positions_base = []
-  for (j = 0 ; j < reference.length ; j++) {
-    positions_base.push(j);
-  }
-  positions = jsPsych.randomization.shuffle(positions_base);
-  while (positions.length < 5) {
-    new_pos = jsPsych.randomization.shuffle(positions_base);
-    positions = positions.concat(new_pos);
-  }
-
-  var replaced_tuples = [];
-  for (j = 0 ; j < 5 ; j++) {
-    //Split, replace a random position with a sampled letter , join, push
-    var distractor = reference.split('');
-    var pos = positions[j];
-
-    // Shuffles letters to go through
+for (i = 0 ; i < allStimuli.length; i++) {
+  stimuli = [allStimuli[i].target_word];
+  if (trial_correctness_array[i]) {
+    stimuli.push(allStimuli[i].target_word);
+  } else {
+    var distractor = allStimuli[i].target_word.split('');
     var letters = "abcdefghijklmnopqrstuvwxyz".split('');
-    letters = jsPsych.randomization.sampleWithoutReplacement(letters, 26);
+    var pos = Math.floor(Math.random()*distractor.length);
+    var letters = jsPsych.randomization.sampleWithoutReplacement(letters, 26);
     var idx_letter = 0;
-
-    // Ensures that we replace a letter with an actually different one, which we
-    // haven't used yet
-    while (distractor[pos] == letters[idx_letter] ||
-           test_includes(replaced_tuples, [pos, letters[idx_letter]])
-           ) {
+    while (distractor[pos] == letters[idx_letter]) {
       idx_letter = idx_letter + 1;
     }
-
-    replaced_tuples.push([pos, letters[idx_letter]]);
     distractor[pos] = letters[idx_letter];
-    distractors.push(distractor.join(""));
+    stimuli.push(distractor.join(""));
   }
 
-  distractors = jsPsych.randomization.shuffle(distractors);
-
-  allStimuli[i].distractor_list = distractors;
-  allStimuli[i].type = 'delayed-mts';
-  allStimuli[i].blank_delay = 500;
-  allStimuli[i].is_train = false;
-  task.push(allStimuli[i]);
+  trial = {
+    "type": "same-different-html",
+    "stimuli": stimuli,
+    "answer": (trial_correctness_array[i] ? "same" : "different"),
+    "same_key": same_key,
+    "different_key": different_key,
+    "first_stim_duration": first_stim_duration,
+    "gap_duration": gap_duration,
+    "second_stim_duration": second_stim_duration,
+  }
+  task.push(trial);
 }
