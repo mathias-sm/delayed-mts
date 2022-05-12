@@ -6,6 +6,7 @@ var gap_duration = 1000;
 var second_stim_duration = 2000;
 var same_key = "f"
 var different_key = "j"
+var post_trial_gap = 500
 
 train_1 = {
   "type": "same-different-html",
@@ -16,6 +17,7 @@ train_1 = {
   "first_stim_duration": first_stim_duration,
   "gap_duration": gap_duration,
   "second_stim_duration": second_stim_duration,
+  "post_trial_gap": post_trial_gap
 }
 
 // TODO: ADD SOME more training
@@ -57,6 +59,7 @@ for (i = 0 ; i < allStimuli.length; i++) {
     "first_stim_duration": first_stim_duration,
     "gap_duration": gap_duration,
     "second_stim_duration": second_stim_duration,
+    "post_trial_gap": post_trial_gap
   }
   task.push(trial);
 }
