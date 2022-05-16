@@ -1,9 +1,9 @@
 /**
  * jspsych-same-different
- * Josh de Leeuw
+ * Josh de Leeuw modified by Mathias Sablé-Meyer
  *
  * plugin for showing two stimuli sequentially and getting a same / different judgment
- *
+ * Free viewing duration for stim1
  * documentation: docs.jspsych.org
  *
  */
@@ -71,33 +71,31 @@ jsPsych.plugins['same-different-html'] = (function() {
 
   plugin.trial = function(display_element, trial) {
 
-    display_element.innerHTML = '<div class="jspsych-same-different-stimulus">'+trial.stimuli[0]+'</div>';
+    display_element.innerHTML = '<div class="jspsych-same-different-stimulus">Press <strong>spacebar</strong> to start</div>';
 
-    var first_stim_info;
-    if (trial.first_stim_duration > 0) {
-      jsPsych.pluginAPI.setTimeout(function() {
-        showBlankScreen();
-      }, trial.first_stim_duration);
-    } else {
-      function afterKeyboardResponse(info) {
-        first_stim_info = info;
-        showBlankScreen();
+    var first_stim_info = {};
+    function handle_kb_down(event) {
+      if (event.keyCode == 32) {
+        display_element.innerHTML = '<div class="jspsych-same-different-stimulus">'+trial.stimuli[0]+'</div>';
+
+        if (first_stim_info.rt === undefined) {
+          first_stim_info.rt = performance.now();
+        }
       }
-      jsPsych.pluginAPI.getKeyboardResponse({
-        callback_function: afterKeyboardResponse,
-        valid_responses: trial.advance_key,
-        rt_method: 'performance',
-        persist: false,
-        allow_held_key: false
-      });
     }
 
-    function showBlankScreen() {
-      display_element.innerHTML = '';
+    function handle_kb_up(event) {
+      if (event.keyCode == 32 && first_stim_info.rt != undefined) {
+        first_stim_info.rt = performance.now() - first_stim_info.rt;
+        display_element.innerHTML = '';
 
-      jsPsych.pluginAPI.setTimeout(function() {
-        showSecondStim();
-      }, trial.gap_duration);
+        jsPsych.pluginAPI.setTimeout(function() {
+          showSecondStim();
+        }, trial.gap_duration);
+
+        document.removeEventListener("keydown", handle_kb_down);
+        document.removeEventListener("keyup", handle_kb_up);
+      }
     }
 
     function showSecondStim() {
@@ -139,15 +137,15 @@ jsPsych.plugins['same-different-html'] = (function() {
           rt: info.rt,
           answer: trial.answer,
           correct: correct,
-          stimulus: [trial.stimuli[0], trial.stimuli[1]],
-          response: info.key
+          stim_1: trial.stimuli[0],
+          stim_2: trial.stimuli[1],
+          response: info.key,
+          encoding_time: first_stim_info.rt,
         };
-        if (first_stim_info) {
-          trial_data["rt_stim1"] = first_stim_info.rt;
-          trial_data["response_stim1"] = first_stim_info.key;
-        }
 
         display_element.innerHTML = '';
+
+        console.log(trial_data);
 
         jsPsych.finishTrial(trial_data);
       }
@@ -161,6 +159,9 @@ jsPsych.plugins['same-different-html'] = (function() {
       });
 
     }
+
+    document.addEventListener("keydown", handle_kb_down);
+    document.addEventListener("keyup", handle_kb_up);
 
   };
 

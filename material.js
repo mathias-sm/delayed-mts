@@ -1,7 +1,6 @@
 var task = [];
 // Number of trials
 var N = 100;
-var first_stim_duration = 1000;
 var gap_duration = 1000;
 var second_stim_duration = 2000;
 var same_key = "f"
@@ -14,7 +13,6 @@ train_1 = {
   "same_key": same_key,
   "different_key": different_key,
   "answer": "different",
-  "first_stim_duration": first_stim_duration,
   "gap_duration": gap_duration,
   "second_stim_duration": second_stim_duration,
   "post_trial_gap": post_trial_gap
@@ -56,7 +54,6 @@ for (i = 0 ; i < allStimuli.length; i++) {
     "answer": (trial_correctness_array[i] ? "same" : "different"),
     "same_key": same_key,
     "different_key": different_key,
-    "first_stim_duration": first_stim_duration,
     "gap_duration": gap_duration,
     "second_stim_duration": second_stim_duration,
     "post_trial_gap": post_trial_gap
