@@ -18,6 +18,8 @@ jsPsych.data.addProperties({'fKeyMeansCorrect': fKeyMeansCorrect});
 train_1 = {
   "type": "same-different-html",
   "stimuli": ["decra", "debra"],
+  "first": "decra",
+  "second": "debra",
   "same_key": same_key,
   "different_key": different_key,
   "answer": "different",
