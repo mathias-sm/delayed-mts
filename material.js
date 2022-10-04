@@ -1,11 +1,19 @@
 var task = [];
+var max_N_files = 0;
 // Number of trials
 var N = 100;
 var gap_duration = 1000;
 var second_stim_duration = 2000;
-var same_key = "f"
-var different_key = "j"
-var post_trial_gap = 500
+var fKeyMeansCorrect = Math.random() < 0.5;
+var same_key = fKeyMeansCorrect ? "f" : "j";
+var different_key = fKeyMeansCorrect ? "j" : "f";
+var post_trial_gap = 500;
+var finished_loading = false;
+
+var file_id = "stimuli/" + (Math.floor(Math.random()*max_N_files)) + ".csv";
+
+jsPsych.data.addProperties({'file_id': file_id});
+jsPsych.data.addProperties({'fKeyMeansCorrect': fKeyMeansCorrect});
 
 train_1 = {
   "type": "same-different-html",
@@ -20,43 +28,30 @@ train_1 = {
 
 // TODO: ADD SOME more training
 task.push(train_1);
+// task.push(train_2);
+// task.push(train_3);
 
-allStimuli = jsPsych.randomization.shuffle(allStimuli);
 
-// Randomize exactly 50/50 correct
-var trial_correctness_array = [];
-for (var i = 0 ; i < N/2 ; i++) {
-  trial_correctness_array.push(true);
-  trial_correctness_array.push(false);
-}
-trial_correctness_array = jsPsych.randomization.shuffle(trial_correctness_array);
-
-for (i = 0 ; i < allStimuli.length; i++) {
-  stimuli = [allStimuli[i].target_word];
-  if (trial_correctness_array[i]) {
-    stimuli.push(allStimuli[i].target_word);
-  } else {
-    var distractor = allStimuli[i].target_word.split('');
-    var letters = "abcdefghijklmnopqrstuvwxyz".split('');
-    var pos = Math.floor(Math.random()*distractor.length);
-    var letters = jsPsych.randomization.sampleWithoutReplacement(letters, 26);
-    var idx_letter = 0;
-    while (distractor[pos] == letters[idx_letter]) {
-      idx_letter = idx_letter + 1;
+Papa.parse(file_id,
+  {
+    download: true,
+    header: true,
+    complete: function(results) {
+      allStimuli = results.data;
+      for (i = 0 ; i < allStimuli.length - 1; i++) {
+        trial = allStimuli[i];
+        trial.type = "same-different-html"
+        trial.stimuli = [trial.first, trial.second];
+        trial.answer = (trial.first === trial.second ? "same" : "different");
+        trial.same_key = same_key;
+        trial.different_key = different_key;
+        trial.gap_duration = gap_duration;
+        trial.second_stim_duration = second_stim_duration;
+        trial.post_trial_gap = post_trial_gap;
+        task.push(trial);
+      }
+      finished_loading = true;
     }
-    distractor[pos] = letters[idx_letter];
-    stimuli.push(distractor.join(""));
   }
+);
 
-  trial = {
-    "type": "same-different-html",
-    "stimuli": stimuli,
-    "answer": (trial_correctness_array[i] ? "same" : "different"),
-    "same_key": same_key,
-    "different_key": different_key,
-    "gap_duration": gap_duration,
-    "second_stim_duration": second_stim_duration,
-    "post_trial_gap": post_trial_gap
-  }
-  task.push(trial);
-}
