@@ -13,7 +13,7 @@ var consent = {
 var instructions = {
   type:'instructions',
   show_clickable_nav: true,
-  pages: ["<h1>Instructions</h1><div id='instructions'><p>In this experiment, you need to memorize a string of letters and then identify it among other similar strings. For this :</p><ol><li>to show the string of letters on the screen, press the spacebar in your keyboard. <strong>Keep the spacebar pressed as long as you estimate needed for you to remember the string of letters</strong>. Once you release the spacebar, the string of letters will be replaced by a white screen for two seconds. </li><li>Among the six strings that will appear after, <strong>click with the mouse on the string of letters that you just memorized</strong>. Attention: you can not change your answer !</li></ol><p>Thank you for your participation and please remain concentrated!</p></div>"]
+  pages: ["<h1>Instructions</h1><div id='instructions'><p>In this experiment, you need to memorize a string of letters and then identify it among other similar strings. For this :</p><ol><li>Press '"+same_key+"' to indicate that the words are the same</li></ol><p>Thank you for your participation and please remain concentrated!</p></div>"]
 };
 
 // Declare the demographic questionaire block. If this gets too long one could
@@ -22,11 +22,6 @@ var survey = {
   type: "survey-dropdown",
   preamble: "A questionnaire",
   questions: [
-    {
-      prompt: "Gender",
-      options: [ "Male", "Female", "Other"],
-      labels: ["M", "F", "O"],
-    },
     { prompt: "Age", htmlType: "number" },
     {
       prompt: "Highest level of education",

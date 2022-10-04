@@ -26,7 +26,7 @@ train_1 = {
   "post_trial_gap": post_trial_gap
 }
 
-// TODO: ADD SOME more training
+// TODO: ADD more training
 task.push(train_1);
 // task.push(train_2);
 // task.push(train_3);

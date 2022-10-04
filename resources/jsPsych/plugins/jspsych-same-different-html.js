@@ -137,8 +137,6 @@ jsPsych.plugins['same-different-html'] = (function() {
         trial_data.rt = info.rt;
         trial_data.answer = trial.answer;
         trial_data.correct = correct;
-        trial_data.stim_1 = trial.stimuli[0];
-        trial_data.stim_2 = trial.stimuli[1];
         trial_data.response = info.key;
         trial_data.encoding_time = first_stim_info.rt;
 
