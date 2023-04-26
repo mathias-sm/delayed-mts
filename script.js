@@ -1,6 +1,9 @@
 // Generate a random subject ID and add it to jsPsych's data to be saved
 var subjectID = jsPsych.randomization.randomID(10);
 jsPsych.data.addProperties({'ID': subjectID});
+jsPsych.data.addProperties({'self_paced': self_paced});
+jsPsych.data.addProperties({'masked': masked});
+jsPsych.data.addProperties({'condition': condition});
 
 // The consent block, which points to the consent PAGE
 var consent = {
