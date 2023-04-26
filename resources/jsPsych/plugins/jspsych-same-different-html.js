@@ -71,7 +71,7 @@ jsPsych.plugins['same-different-html'] = (function() {
 
   plugin.trial = function(display_element, trial) {
 
-    display_element.innerHTML = '<div class="jspsych-same-different-stimulus">Press <strong>spacebar</strong> to start</div>';
+    display_element.innerHTML = '<div class="jspsych-same-different-stimulus">Press <strong class="second">spacebar</strong> to start</div>';
 
     var first_stim_info = {};
     function handle_kb_down(event) {

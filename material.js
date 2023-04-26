@@ -15,23 +15,27 @@ var file_id = "stimuli/" + (Math.floor(Math.random()*max_N_files)) + ".csv";
 jsPsych.data.addProperties({'file_id': file_id});
 jsPsych.data.addProperties({'fKeyMeansCorrect': fKeyMeansCorrect});
 
-train_1 = {
-  "type": "same-different-html",
-  "stimuli": ["decra", "debra"],
-  "first": "decra",
-  "second": "debra",
-  "same_key": same_key,
-  "different_key": different_key,
-  "answer": "different",
-  "gap_duration": gap_duration,
-  "second_stim_duration": second_stim_duration,
-  "post_trial_gap": post_trial_gap
-}
+trains =
+  [
+    ["decra", "debra"],
+  ]
 
-// TODO: ADD more training
-task.push(train_1);
-// task.push(train_2);
-// task.push(train_3);
+for (var i = 0 ; i < trains.length ; i++) {
+    classed_first = "<span class='first'>" + trains[i][0] + "</span>";
+    classed_second = "<span class='second'>" + trains[i][1] + "</span>";
+    task.push({
+      "type": "same-different-html",
+      "stimuli": [classed_first, classed_second],
+      "first": trains[i][0],
+      "second": trains[i][1],
+      "same_key": same_key,
+      "different_key": different_key,
+      "answer": (trains[i][0] === trains[i][1] ? "same" : "different"),
+      "gap_duration": gap_duration,
+      "second_stim_duration": second_stim_duration,
+      "post_trial_gap": post_trial_gap
+    })
+}
 
 
 Papa.parse(file_id,
@@ -42,8 +46,10 @@ Papa.parse(file_id,
       allStimuli = results.data;
       for (i = 0 ; i < allStimuli.length - 1; i++) {
         trial = allStimuli[i];
+        classed_first = "<span class='first'>" + trial.first + "</span>";
+        classed_second = "<span class='second'>" + trial.second + "</span>";
         trial.type = "same-different-html"
-        trial.stimuli = [trial.first, trial.second];
+        trial.stimuli = [classed_first, classed_second];
         trial.answer = (trial.first === trial.second ? "same" : "different");
         trial.same_key = same_key;
         trial.different_key = different_key;
