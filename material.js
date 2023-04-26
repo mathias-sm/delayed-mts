@@ -10,7 +10,7 @@ var different_key = fKeyMeansCorrect ? "j" : "f";
 var post_trial_gap = 500;
 var finished_loading = false;
 
-var file_id = "stimuli/" + (Math.floor(Math.random()*max_N_files)) + ".csv";
+var file_id = "stimuli"+(condition === "" ? "" : "_" + condition)+"/" + (Math.floor(Math.random()*max_N_files)) + ".csv";
 
 jsPsych.data.addProperties({'file_id': file_id});
 jsPsych.data.addProperties({'fKeyMeansCorrect': fKeyMeansCorrect});

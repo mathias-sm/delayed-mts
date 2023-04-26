@@ -72,7 +72,7 @@ wait_load = function() {
         } else {
           display_element.innerHTML = "Thank you for your participation.";
         }
-        SaveData("pilot_delayed_mts", subjectID, jsPsych.data.get().csv());
+        SaveData("pilot_delayed_mts_"+condition, subjectID, jsPsych.data.get().csv());
       }
     });
   } else {

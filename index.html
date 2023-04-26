@@ -4,6 +4,13 @@
     <meta charset="UTF-8">
     <title>Expérience en cours</title>
 
+    <!-- Parse url to get conditions -->
+    <script>
+      urlParams = new URLSearchParams(window.location.search);
+      debug = (urlParams.get("debug") === "");
+      condition = urlParams.get("condition") === null ? "" : urlParams.get("condition");
+    </script>
+
     <!-- Official jsPsych stuff -->
     <script src="resources/jsPsych/jspsych.js"></script>
     <script src="resources/jsPsych/plugins/jspsych-external-html.js"></script>
@@ -24,8 +31,6 @@
 
     <!-- Utils -->
     <script src="resources/save-data.js"></script>
-    <script>var debug = (window.location.search == "?debug")</script>
-
 
     <!-- Main task file -->
     <script src="material.js"></script>
