@@ -45,7 +45,7 @@ jsPsych.plugins['same-different-html'] = (function() {
       first_stim_duration: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'First stimulus duration',
-        default: null,
+        default: 200,
         description: 'How long to show the first stimulus for in milliseconds. If null, then the stimulus will remain on the screen until any keypress is made.'
       },
       gap_duration: {
@@ -53,6 +53,12 @@ jsPsych.plugins['same-different-html'] = (function() {
         pretty_name: 'Gap duration',
         default: 500,
         description: 'How long to show a blank screen in between the two stimuli.'
+      },
+      mask_string: {
+        type: jsPsych.plugins.parameterType.STRING,
+        pretty_name: 'Mask string',
+        default: "XXXXXXXX",
+        description: 'A string used to mask the first word'
       },
       second_stim_duration: {
         type: jsPsych.plugins.parameterType.INT,
@@ -81,21 +87,37 @@ jsPsych.plugins['same-different-html'] = (function() {
         if (first_stim_info.rt === undefined) {
           first_stim_info.rt = performance.now();
         }
+
+        if (!self_paced) {
+          jsPsych.pluginAPI.setTimeout(function() {
+            end_first_stim();
+          }, trial.first_stim_duration);
+        }
       }
     }
 
     function handle_kb_up(event) {
       if (event.keyCode == 32 && first_stim_info.rt != undefined) {
+        end_first_stim();
+      }
+    }
+
+    function end_first_stim() {
         first_stim_info.rt = performance.now() - first_stim_info.rt;
-        display_element.innerHTML = '';
+        if (masked) {
+          display_element.innerHTML = trial.mask_string;
+        } else {
+          display_element.innerHTML = '';
+        }
 
         jsPsych.pluginAPI.setTimeout(function() {
           showSecondStim();
         }, trial.gap_duration);
 
         document.removeEventListener("keydown", handle_kb_down);
-        document.removeEventListener("keyup", handle_kb_up);
-      }
+        if (self_paced) {
+          document.removeEventListener("keyup", handle_kb_up);
+        }
     }
 
     function showSecondStim() {
@@ -158,7 +180,9 @@ jsPsych.plugins['same-different-html'] = (function() {
     }
 
     document.addEventListener("keydown", handle_kb_down);
-    document.addEventListener("keyup", handle_kb_up);
+    if (self_paced) {
+      document.addEventListener("keyup", handle_kb_up);
+    }
 
   };
 

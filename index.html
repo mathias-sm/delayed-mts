@@ -8,6 +8,8 @@
     <script>
       urlParams = new URLSearchParams(window.location.search);
       debug = (urlParams.get("debug") === "");
+      self_paced = (urlParams.get("sp") === "");
+      masked = (urlParams.get("masked") === "");
       condition = urlParams.get("condition") === null ? "" : urlParams.get("condition");
     </script>
 
