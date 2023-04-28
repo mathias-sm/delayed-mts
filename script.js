@@ -12,12 +12,17 @@ var consent = {
   cont_btn: "start"
 };
 
+
 // TODO change this Instructions --- text declared in another file
 var instructions = {
   type:'instructions',
   show_clickable_nav: true,
-  pages: ["<h1>Instructions</h1><div id='instructions'><p>In this experiment, you need to memorize a string of letters and then identify it among other similar strings. For this :</p><ol><li>Press '"+same_key+"' to indicate that the words are the same</li></ol><p>Thank you for your participation and please remain concentrated!</p></div>"]
-};
+}
+if (self_paced) {
+  instructions.pages = ["<h1>Instructions</h1><div id='instructions'><p>In this experiment, you will be presented with letter strings on the screen, for example, 'rekagable'. Your task is to memorize these strings. You have as much time as you need for memorization: By HOLDING THE SPACEBAR for as long as you want you control how long the first string will be shown. Once you RELEASE THE SPACEBAR the string will disappear from the screen, and after a short delay another string will appear. The new string will be either IDENTICAL OR DIFFERENT from the one you memorized.</p><ol><li>If the two strings are IDENTICAL press '"+same_key+"'.</li><li>If the two strings are DIFFERENT press '"+different_key+"'.</li></ol><p> '"+same_key+"' and '"+different_key+"' are two keys on your keyboard that are marked with a small bumpy ridge on them.</p> <p> Thank you for your participation and please remain concentrated!</p></div>"]
+} else {
+  instructions.pages = ["instructions not self paced CHANGE ME"]
+}
 
 // Declare the demographic questionaire block. If this gets too long one could
 // put the data into yet another file.
@@ -75,7 +80,7 @@ wait_load = function() {
         } else {
           display_element.innerHTML = "Thank you for your participation.";
         }
-        SaveData("pilot_delayed_mts_"+condition, subjectID, jsPsych.data.get().csv());
+        SaveData("morph_v2", subjectID, jsPsych.data.get().csv());
       }
     });
   } else {
