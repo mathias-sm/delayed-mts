@@ -45,7 +45,7 @@ jsPsych.plugins['same-different-html'] = (function() {
       first_stim_duration: {
         type: jsPsych.plugins.parameterType.INT,
         pretty_name: 'First stimulus duration',
-        default: 200,
+        default: 300,
         description: 'How long to show the first stimulus for in milliseconds. If null, then the stimulus will remain on the screen until any keypress is made.'
       },
       gap_duration: {
@@ -57,7 +57,7 @@ jsPsych.plugins['same-different-html'] = (function() {
       mask_string: {
         type: jsPsych.plugins.parameterType.STRING,
         pretty_name: 'Mask string',
-        default: "XXXXXXXX",
+        default: "xxxxxxxx",
         description: 'A string used to mask the first word'
       },
       second_stim_duration: {
